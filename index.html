@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌻 Nuestro amor</title>
+<style>
+  :root {
+    --bg1:#fff9c4; --bg2:#fdd835; --text:#4b2e07;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body {
+    min-height:100vh;
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 50% -20%, #fffde7 0%, #f7b500 80%);
+    color: var(--text);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .page {
+    position:relative; width:min(100%, 480px); padding: 18px;
+    text-align:center; z-index:2;
+  }
+  .card {
+    background:rgba(255,255,255,0.68); border-radius:22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+    backdrop-filter: blur(8px); padding:20px 16px 30px;
+  }
+  .card h1 {font-size:2rem; margin-bottom:8px;}
+  #gif {width:120px; height:auto; margin:10px auto; display:block; border-radius:8px;}
+  #days {font-size:4rem; font-weight:800; margin:4px 0 10px;}
+  #desde {font-size:1.1rem;}
+  .particle-field, .flower-field {position:absolute; inset:0; pointer-events:none;}
+  .firework {position:absolute; border-radius:50%; transform:translate(-50%,-50%); opacity:0; box-shadow:0 0 20px 6px rgba(255,221,74,.86);}
+  .flower {position:absolute; width:40px; height:40px; transform-origin:center;}
+  .sunflower {animation: floatFlower infinite ease-in-out;}
+  .daisy {animation: sway infinite ease-in-out;}
+  .tulip {animation: bounce infinite ease-in-out;}
+  .buttercup {animation: spin infinite linear;}
+  .petal {
+    position:absolute; width:12px; height:28px; background:linear-gradient(180deg,#ffe464,#ffb800);
+    border-radius:10px 10px 6px 6px; transform-origin:6px 22px;
+    box-shadow:0 2px 8px rgba(75,46,7,.35);
+  }
+  .daisy-petal {
+    width:10px; height:20px; background:#fff; border:1px solid #ffb800; border-radius:50% 50% 0 0;
+    transform-origin:5px 18px;
+  }
+  .tulip-petal {
+    width:14px; height:24px; background:linear-gradient(180deg,#ffe464,#ffb800); border-radius:50%;
+    transform-origin:7px 20px;
+  }
+  .buttercup-petal {
+    width:8px; height:16px; background:#ffe464; border-radius:50%; transform-origin:4px 14px;
+  }
+  .center {
+    width:14px; height:14px; background:#d69214; border-radius:50%; position:absolute;
+    left:50%; top:50%; transform:translate(-50%,-50%);
+    box-shadow:0 0 14px rgba(64,37,6,.75);
+  }
+  .daisy-center {background:#fff; border:2px solid #ffb800;}
+  .tulip-center {background:#ffb800; width:10px; height:10px;}
+  .buttercup-center {background:#d69214; width:6px; height:6px;}
+  @keyframes floatFlower {
+    0% { transform: translateY(0) rotate(0deg) scale(1); }
+    50% { transform: translateY(-24px) rotate(10deg) scale(1.04); }
+    100% { transform: translateY(0) rotate(0deg) scale(1);}
+  }
+  @keyframes sway {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(-5deg); }
+    75% { transform: translateY(-10px) rotate(5deg); }
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.1); }
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes sparkle {
+    0% { opacity:0.6; transform:translate(-50%,-50%) scale(0.2);}
+    40% { opacity:1; transform:translate(-50%,-50%) scale(1);}
+    100% { opacity:0; transform:translate(-50%,-50%) scale(1.8);}
+  }
+</style>
+</head>
+<body>
+<div class="particle-field" id="fireworks"></div>
+<div class="flower-field" id="field"></div>
+<div class="page">
+  <div class="card">
+    <h1>🌻 Mi Reina Hermosa Te Amo Mucho</h1>
+    <img id="gif" src="https://png.pngtree.com/png-vector/20240629/ourmid/pngtree-a-bunch-of-yellow-flowers-png-image_12922322.png" alt="GIF animado">
+    <p>Ten estas flores solo por hermosa</p>
+    <p>Y Recuerda Que Hoy llevamos:</p>
+    <div id="days">0</div> <p>Dias</p>
+    <p id="desde">Desde ...</p>
+  </div>
+</div>
+
+<script>
+  const inicio = new Date('2025-05-24T19:00:00');
+  const hoy = new Date();
+  const dias = Math.floor((hoy - inicio) / (1000*60*60*24));
+  document.getElementById('days').textContent = dias;
+  document.getElementById('desde').textContent = 'Desde ' +
+    inicio.toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
+
+  const flowerCount = 30;
+  const field = document.getElementById('field');
+  const flowerTypes = ['sunflower', 'daisy', 'tulip', 'buttercup'];
+  for (let i = 0; i < flowerCount; i++) {
+    const type = flowerTypes[Math.floor(Math.random() * flowerTypes.length)];
+    const f = document.createElement('div');
+    f.className = `flower ${type}`;
+    const x = Math.random() * 92 + 4;
+    const y = Math.random() * 92 + 4;
+    f.style.left = x + '%'; f.style.top = y + '%';
+    f.style.animationDuration = (6 + Math.random()*3) + 's';
+    f.style.animationDelay = (Math.random()*2)+'s';
+    let petalClass = 'petal';
+    let petalCount = 10;
+    if (type === 'daisy') { petalClass = 'daisy-petal'; petalCount = 12; }
+    else if (type === 'tulip') { petalClass = 'tulip-petal'; petalCount = 6; }
+    else if (type === 'buttercup') { petalClass = 'buttercup-petal'; petalCount = 8; }
+    for (let p=0; p<petalCount; p++) {
+      const petal = document.createElement('div');
+      petal.className = petalClass;
+      petal.style.transform = `rotate(${p*(360/petalCount)}deg) translateY(-8px)`;
+      f.appendChild(petal);
+    }
+    const center = document.createElement('div');
+    center.className = `center ${type}-center`;
+    f.appendChild(center);
+    field.appendChild(f);
+  }
+
+  const fireworkContainer = document.getElementById('fireworks');
+  function spawnFirework(){
+    const fw = document.createElement('div');
+    fw.className='firework';
+    const l = 10 + Math.random()*80;
+    const t = 8 + Math.random()*70;
+    const size = 70 + Math.random()*50;
+    fw.style.left = l + '%';
+    fw.style.top = t + '%';
+    fw.style.width = size+'px';
+    fw.style.height = size+'px';
+    fw.style.boxShadow = '0 0 '+(size*0.6)+'px '+(size*0.2)+'px rgba(255,230,110,0.8)';
+    fw.style.animation = 'sparkle 1.2s linear forwards';
+    fireworkContainer.appendChild(fw);
+    setTimeout(()=>fireworkContainer.removeChild(fw),1400);
+  }
+  setInterval(spawnFirework, 700);
+  spawnFirework();
+</script>
+</body>
+</html>
